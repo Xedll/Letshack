@@ -10,6 +10,7 @@ public static class RegisterApplication
         services.AddTransient<AuthService>();
         services.AddTransient<TechnologyService>();
         services.AddTransient<RelatedTopicService>();
+        services.AddTransient<TeamRoleService>();
         return services;
     }
 }
