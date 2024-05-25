@@ -24,6 +24,7 @@ public class RelatedTopicRepository : IRelatedTopicStore
     public async Task Create(RelatedTopic relatedTopic)
     {
         await _context.RelatedTopic.AddAsync(relatedTopic);
+        await _context.SaveChangesAsync();
     }
 
     public async Task Update(RelatedTopic relatedTopic)

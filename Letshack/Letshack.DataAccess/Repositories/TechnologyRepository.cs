@@ -24,6 +24,7 @@ public class TechnologyRepository : ITechnologyStore
     public async Task Create(Technology technology)
     {
         await _context.Technology.AddAsync(technology);
+        await _context.SaveChangesAsync();
     }
 
     public async Task Update(Technology technology)

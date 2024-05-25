@@ -7,7 +7,9 @@ public static class RegisterApplication
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddScoped<AuthService>();
+        services.AddTransient<AuthService>();
+        services.AddTransient<TechnologyService>();
+        services.AddTransient<RelatedTopicService>();
         return services;
     }
 }

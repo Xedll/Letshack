@@ -17,6 +17,7 @@ public class RoleRepository : IRoleStore
     public async Task Create(Role role)
     {
         await _context.TeamRole.AddAsync(role);
+        await _context.SaveChangesAsync();
     }
 
     public async Task Update(Role role)

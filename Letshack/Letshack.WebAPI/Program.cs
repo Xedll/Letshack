@@ -2,15 +2,16 @@ using System.Text;
 using Letshack.Application;
 using Letshack.DataAccess;
 using Letshack.Domain.Models;
+using Letshack.WebAPI.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -36,10 +37,12 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<AppDbContext>(opts => opts.UseNpgsql(connectionString));
 
-
 builder.Services
     .AddApplication()
     .AddDataAccess();
+
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services
     .AddDefaultIdentity<User>(opts =>
@@ -51,8 +54,7 @@ builder.Services
         opts.Password.RequireNonAlphanumeric = false;
         opts.Password.RequireUppercase = false;
     })
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddAuthentication(opts =>
 {
@@ -75,6 +77,7 @@ builder.Services.AddAuthentication(opts =>
 });
 
 builder.Services.AddAuthorization();
+
 
 var app = builder.Build();
 
@@ -107,12 +110,15 @@ app.MapGet("/weatherforecast", () =>
     .RequireAuthorization()
     .DisableAntiforgery();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
+
+app.UseExceptionHandler(_ => { });
 
 app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSerilogRequestLogging();
 
 app.MapControllers();
 
