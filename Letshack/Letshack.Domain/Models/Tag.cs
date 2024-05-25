@@ -6,6 +6,5 @@ public class Tag
     public int RelatedTopicId { get; set; }
     public RelatedTopic RelatedTopic { get; set; }
     public int TechnologyId { get; set; }
-    public Technology Technology { get; set; }
-    public List<UserTag> UserTags { get; set; } = [];
+    public Technology Technology { get; set; } 
 }

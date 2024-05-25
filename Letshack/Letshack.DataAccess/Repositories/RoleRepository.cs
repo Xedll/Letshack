@@ -16,12 +16,12 @@ public class RoleRepository : IRoleStore
     
     public async Task Create(Role role)
     {
-        await _context.TeamRoles.AddAsync(role);
+        await _context.TeamRole.AddAsync(role);
     }
 
     public async Task Update(Role role)
     {
-        await _context.TeamRoles
+        await _context.TeamRole
             .Where(r => r.Id == role.Id)
             .ExecuteUpdateAsync(r => r
                 .SetProperty(ro => ro.Title, role.Title));
@@ -29,21 +29,21 @@ public class RoleRepository : IRoleStore
 
     public async Task Delete(int id)
     {
-        await _context.TeamRoles.
+        await _context.TeamRole.
             Where(r => r.Id == id)
             .ExecuteDeleteAsync();
     }
 
     public async Task<IReadOnlyList<Role>> GetAll()
     {
-       return await _context.TeamRoles.
+       return await _context.TeamRole.
             AsNoTracking()
             .ToListAsync();
     }
 
     public async Task<Role> Get(int id)
     {
-        return await _context.TeamRoles.FirstOrDefaultAsync(r => r.Id == id)
+        return await _context.TeamRole.FirstOrDefaultAsync(r => r.Id == id)
                ?? throw new NotFoundException($"role with id: {id} not found");
     }
 }

@@ -55,7 +55,7 @@ namespace Letshack.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RelatedTopics",
+                name: "RelatedTopic",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -64,11 +64,11 @@ namespace Letshack.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RelatedTopics", x => x.Id);
+                    table.PrimaryKey("PK_RelatedTopic", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TeamRoles",
+                name: "TeamRole",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -77,11 +77,11 @@ namespace Letshack.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeamRoles", x => x.Id);
+                    table.PrimaryKey("PK_TeamRole", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Technologies",
+                name: "Technology",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -90,7 +90,7 @@ namespace Letshack.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Technologies", x => x.Id);
+                    table.PrimaryKey("PK_Technology", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -200,7 +200,7 @@ namespace Letshack.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Teams",
+                name: "Team",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -211,9 +211,9 @@ namespace Letshack.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Teams", x => x.Id);
+                    table.PrimaryKey("PK_Team", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Teams_AspNetUsers_CreatorId",
+                        name: "FK_Team_AspNetUsers_CreatorId",
                         column: x => x.CreatorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -221,39 +221,59 @@ namespace Letshack.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tags",
+                name: "Tag",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     RelatedTopicId = table.Column<int>(type: "integer", nullable: false),
-                    TechnologyId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: true)
+                    TechnologyId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tags", x => x.Id);
+                    table.PrimaryKey("PK_Tag", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tags_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Tags_RelatedTopics_RelatedTopicId",
+                        name: "FK_Tag_RelatedTopic_RelatedTopicId",
                         column: x => x.RelatedTopicId,
-                        principalTable: "RelatedTopics",
+                        principalTable: "RelatedTopic",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tags_Technologies_TechnologyId",
+                        name: "FK_Tag_Technology_TechnologyId",
                         column: x => x.TechnologyId,
-                        principalTable: "Technologies",
+                        principalTable: "Technology",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "NeededRoles",
+                name: "UserTechnology",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    TechnologyId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTechnology", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserTechnology_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserTechnology_Technology_TechnologyId",
+                        column: x => x.TechnologyId,
+                        principalTable: "Technology",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NeededTeamRole",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -263,23 +283,23 @@ namespace Letshack.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NeededRoles", x => x.Id);
+                    table.PrimaryKey("PK_NeededTeamRole", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_NeededRoles_TeamRoles_RoleId",
+                        name: "FK_NeededTeamRole_TeamRole_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "TeamRoles",
+                        principalTable: "TeamRole",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_NeededRoles_Teams_TeamId",
+                        name: "FK_NeededTeamRole_Team_TeamId",
                         column: x => x.TeamId,
-                        principalTable: "Teams",
+                        principalTable: "Team",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TeamMembers",
+                name: "TeamMember",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -290,43 +310,17 @@ namespace Letshack.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeamMembers", x => x.Id);
+                    table.PrimaryKey("PK_TeamMember", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TeamMembers_AspNetUsers_UserId",
+                        name: "FK_TeamMember_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TeamMembers_Teams_TeamId",
+                        name: "FK_TeamMember_Team_TeamId",
                         column: x => x.TeamId,
-                        principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserTags",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TagId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserTags", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserTags_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserTags_Tags_TagId",
-                        column: x => x.TagId,
-                        principalTable: "Tags",
+                        principalTable: "Team",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -369,53 +363,48 @@ namespace Letshack.DataAccess.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_NeededRoles_RoleId",
-                table: "NeededRoles",
+                name: "IX_NeededTeamRole_RoleId",
+                table: "NeededTeamRole",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NeededRoles_TeamId",
-                table: "NeededRoles",
+                name: "IX_NeededTeamRole_TeamId",
+                table: "NeededTeamRole",
                 column: "TeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tags_RelatedTopicId",
-                table: "Tags",
+                name: "IX_Tag_RelatedTopicId",
+                table: "Tag",
                 column: "RelatedTopicId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tags_TechnologyId",
-                table: "Tags",
+                name: "IX_Tag_TechnologyId",
+                table: "Tag",
                 column: "TechnologyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tags_UserId",
-                table: "Tags",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TeamMembers_TeamId",
-                table: "TeamMembers",
-                column: "TeamId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TeamMembers_UserId",
-                table: "TeamMembers",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Teams_CreatorId",
-                table: "Teams",
+                name: "IX_Team_CreatorId",
+                table: "Team",
                 column: "CreatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTags_TagId",
-                table: "UserTags",
-                column: "TagId");
+                name: "IX_TeamMember_TeamId",
+                table: "TeamMember",
+                column: "TeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTags_UserId",
-                table: "UserTags",
+                name: "IX_TeamMember_UserId",
+                table: "TeamMember",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTechnology_TechnologyId",
+                table: "UserTechnology",
+                column: "TechnologyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTechnology_UserId",
+                table: "UserTechnology",
                 column: "UserId");
         }
 
@@ -438,34 +427,34 @@ namespace Letshack.DataAccess.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "NeededRoles");
+                name: "NeededTeamRole");
 
             migrationBuilder.DropTable(
-                name: "TeamMembers");
+                name: "Tag");
 
             migrationBuilder.DropTable(
-                name: "UserTags");
+                name: "TeamMember");
+
+            migrationBuilder.DropTable(
+                name: "UserTechnology");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "TeamRoles");
+                name: "TeamRole");
 
             migrationBuilder.DropTable(
-                name: "Teams");
+                name: "RelatedTopic");
 
             migrationBuilder.DropTable(
-                name: "Tags");
+                name: "Team");
+
+            migrationBuilder.DropTable(
+                name: "Technology");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "RelatedTopics");
-
-            migrationBuilder.DropTable(
-                name: "Technologies");
         }
     }
 }

@@ -16,19 +16,19 @@ public class RelatedTopicRepository : IRelatedTopicStore
     
     public async Task<IReadOnlyList<RelatedTopic>> GetAll()
     {
-        return await _context.RelatedTopics
+        return await _context.RelatedTopic
             .AsNoTracking()
             .ToListAsync();
     }
 
     public async Task Create(RelatedTopic relatedTopic)
     {
-        await _context.RelatedTopics.AddAsync(relatedTopic);
+        await _context.RelatedTopic.AddAsync(relatedTopic);
     }
 
     public async Task Update(RelatedTopic relatedTopic)
     {
-        await _context.RelatedTopics
+        await _context.RelatedTopic
             .Where(r => r.Id == relatedTopic.Id)
             .ExecuteUpdateAsync(r => r
                 .SetProperty(re => re.Title, relatedTopic.Title));
@@ -36,12 +36,12 @@ public class RelatedTopicRepository : IRelatedTopicStore
 
     public async Task Delete(int id)
     {
-        await _context.RelatedTopics.Where(r => r.Id == id).ExecuteDeleteAsync();
+        await _context.RelatedTopic.Where(r => r.Id == id).ExecuteDeleteAsync();
     }
 
     public async Task<RelatedTopic> Get(int id)
     {
-        return await _context.RelatedTopics
+        return await _context.RelatedTopic
             .AsNoTracking()
             .FirstOrDefaultAsync(r => r.Id == id)
                ?? throw new NotFoundException($"related topic with id: {id} not found");

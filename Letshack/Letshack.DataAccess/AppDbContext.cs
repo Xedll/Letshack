@@ -13,14 +13,14 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
         
     }
     
-    public DbSet<NeededRole> NeededRoles { get; set; }
-    public DbSet<RelatedTopic> RelatedTopics { get; set; }
-    public DbSet<Role> TeamRoles { get; set; }
-    public DbSet<Tag> Tags { get; set; }
-    public DbSet<Team> Teams { get; set; }
-    public DbSet<TeamMember> TeamMembers { get; set; }
-    public DbSet<Technology> Technologies { get; set; }
-    public DbSet<UserTag> UserTags { get; set; }
+    public DbSet<NeededRole> NeededTeamRole { get; set; }
+    public DbSet<RelatedTopic> RelatedTopic { get; set; }
+    public DbSet<Role> TeamRole { get; set; }
+    public DbSet<Tag> Tag { get; set; }
+    public DbSet<Team> Team { get; set; }
+    public DbSet<TeamMember> TeamMember { get; set; }
+    public DbSet<Technology> Technology { get; set; }
+    public DbSet<UserTechnology> UserTechnology { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

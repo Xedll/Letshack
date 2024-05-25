@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Letshack.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240525143214_init")]
+    [Migration("20240525161739_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -45,7 +45,7 @@ namespace Letshack.DataAccess.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("NeededRoles");
+                    b.ToTable("NeededTeamRole");
                 });
 
             modelBuilder.Entity("Letshack.Domain.Models.RelatedTopic", b =>
@@ -62,7 +62,7 @@ namespace Letshack.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RelatedTopics");
+                    b.ToTable("RelatedTopic");
                 });
 
             modelBuilder.Entity("Letshack.Domain.Models.Role", b =>
@@ -79,7 +79,7 @@ namespace Letshack.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TeamRoles");
+                    b.ToTable("TeamRole");
                 });
 
             modelBuilder.Entity("Letshack.Domain.Models.Tag", b =>
@@ -96,18 +96,13 @@ namespace Letshack.DataAccess.Migrations
                     b.Property<int>("TechnologyId")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("RelatedTopicId");
 
                     b.HasIndex("TechnologyId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Tags");
+                    b.ToTable("Tag");
                 });
 
             modelBuilder.Entity("Letshack.Domain.Models.Team", b =>
@@ -133,7 +128,7 @@ namespace Letshack.DataAccess.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Team");
                 });
 
             modelBuilder.Entity("Letshack.Domain.Models.TeamMember", b =>
@@ -160,7 +155,7 @@ namespace Letshack.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("TeamMembers");
+                    b.ToTable("TeamMember");
                 });
 
             modelBuilder.Entity("Letshack.Domain.Models.Technology", b =>
@@ -177,7 +172,7 @@ namespace Letshack.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Technologies");
+                    b.ToTable("Technology");
                 });
 
             modelBuilder.Entity("Letshack.Domain.Models.User", b =>
@@ -255,7 +250,7 @@ namespace Letshack.DataAccess.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Letshack.Domain.Models.UserTag", b =>
+            modelBuilder.Entity("Letshack.Domain.Models.UserTechnology", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -263,7 +258,7 @@ namespace Letshack.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("TagId")
+                    b.Property<int>("TechnologyId")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("UserId")
@@ -271,11 +266,11 @@ namespace Letshack.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TagId");
+                    b.HasIndex("TechnologyId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserTags");
+                    b.ToTable("UserTechnology");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -445,10 +440,6 @@ namespace Letshack.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Letshack.Domain.Models.User", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("UserId");
-
                     b.Navigation("RelatedTopic");
 
                     b.Navigation("Technology");
@@ -484,21 +475,21 @@ namespace Letshack.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Letshack.Domain.Models.UserTag", b =>
+            modelBuilder.Entity("Letshack.Domain.Models.UserTechnology", b =>
                 {
-                    b.HasOne("Letshack.Domain.Models.Tag", "Tag")
-                        .WithMany("UserTags")
-                        .HasForeignKey("TagId")
+                    b.HasOne("Letshack.Domain.Models.Technology", "Technology")
+                        .WithMany()
+                        .HasForeignKey("TechnologyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Letshack.Domain.Models.User", "User")
-                        .WithMany()
+                        .WithMany("UserTechnologies")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Tag");
+                    b.Navigation("Technology");
 
                     b.Navigation("User");
                 });
@@ -564,11 +555,6 @@ namespace Letshack.DataAccess.Migrations
                     b.Navigation("NeededRoles");
                 });
 
-            modelBuilder.Entity("Letshack.Domain.Models.Tag", b =>
-                {
-                    b.Navigation("UserTags");
-                });
-
             modelBuilder.Entity("Letshack.Domain.Models.Team", b =>
                 {
                     b.Navigation("TeamMembers");
@@ -581,11 +567,11 @@ namespace Letshack.DataAccess.Migrations
 
             modelBuilder.Entity("Letshack.Domain.Models.User", b =>
                 {
-                    b.Navigation("Tags");
-
                     b.Navigation("TeamMembers");
 
                     b.Navigation("Teams");
+
+                    b.Navigation("UserTechnologies");
                 });
 #pragma warning restore 612, 618
         }
