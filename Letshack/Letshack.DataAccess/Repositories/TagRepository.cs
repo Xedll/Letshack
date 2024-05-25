@@ -18,6 +18,8 @@ public class TagRepository : ITagStore
     {
         return await _context
             .Tag
+            .Include(t => t.Technology)
+            .Include(t => t.RelatedTopic)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -27,6 +29,8 @@ public class TagRepository : ITagStore
         return await _context
             .Tag
             .Where(t => t.RelatedTopicId == topicId)
+            .Include(t => t.Technology)
+            .Include(t => t.RelatedTopic)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -36,6 +40,8 @@ public class TagRepository : ITagStore
         return await _context
             .Tag
             .Where(t => t.TechnologyId == technologyId)
+            .Include(t => t.Technology)
+            .Include(t => t.RelatedTopic)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -64,6 +70,8 @@ public class TagRepository : ITagStore
     {
         return await _context.Tag
                    .AsNoTracking()
+                   .Include(t => t.Technology)
+                   .Include(t => t.RelatedTopic)
                    .FirstOrDefaultAsync(t => t.Id == id)
                ?? throw new NotFoundException($"tag with id: {id} not found");
     }

@@ -11,6 +11,7 @@ public static class RegisterApplication
         services.AddTransient<TechnologyService>();
         services.AddTransient<RelatedTopicService>();
         services.AddTransient<TeamRoleService>();
+        services.AddTransient<TagService>();
         return services;
     }
 }
