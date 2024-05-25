@@ -7,6 +7,32 @@
    License: none (public domain)
 */
 
+@layer base {
+	@font-face {
+		font-family: "TT Travels";
+		src: url("./Fonts/TTTravels-Regular.ttf");
+		font-weight: 400;
+		font-style: normal;
+	}
+	@font-face {
+		font-family: "TT Travels";
+		src: url("./Fonts/TTTravels-DemiBold.ttf");
+		font-weight: 600;
+		font-style: normal;
+	}
+	@font-face {
+		font-family: "TT Travels";
+		src: url("./Fonts/TTTravels-Black.ttf");
+		font-weight: 900;
+		font-style: normal;
+	}
+	@font-face {
+		font-family: "TT Travels";
+		src: url("./Fonts/TTTravels-Medium.ttf");
+		font-weight: 500;
+		font-style: normal;
+	}
+}
 html,
 body,
 div,
@@ -130,4 +156,16 @@ q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+body,
+html {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+#root {
+	height: 100%;
+}
+html {
+	font-family: TT Travels;
 }
