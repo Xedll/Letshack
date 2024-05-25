@@ -8,45 +8,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(option =>
-{
-    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Test API", Version = "v1" });
-    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Please enter a valid token",
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "Bearer"
-    });
-    option.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type=ReferenceType.SecurityScheme,
-                    Id="Bearer"
-                }
-            },
-            new string[]{}
-        }
-    });
-});
-builder.Services.AddControllers().AddRazorPagesOptions(o =>
-{
-    o.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
-});;
+builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
 
-    // .AddRazorPagesOptions(opts => opts.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute()));
 builder.Services.AddCors(opts =>
 {
     opts.AddDefaultPolicy(configuration =>
@@ -63,10 +34,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // var connectionString = builder.Configuration.GetConnectionString("ConnectionString") ??
 //                        throw new Exception("connection string not found");
 
-builder.Services.AddDbContext<AppDbContext>(opts =>
-{
-    opts.UseNpgsql(connectionString);
-});
+builder.Services.AddDbContext<AppDbContext>(opts => opts.UseNpgsql(connectionString));
 
 
 builder.Services
@@ -139,7 +107,6 @@ app.MapGet("/weatherforecast", () =>
     .RequireAuthorization()
     .DisableAntiforgery();
 
-app.UseHsts();
 app.UseHttpsRedirection();
 
 app.UseCors();
