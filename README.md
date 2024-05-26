@@ -32,4 +32,4 @@ $ npm run dev
 ```sh 
 $ dotnet run --project Letshack.WebAPI
 ```
-3. По умолчанию приложение будет запущено на [http://localhost:](http://localhost:5044)
+3. По умолчанию приложение будет запущено на [http://localhost:5044](http://localhost:5044)
