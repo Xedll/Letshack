@@ -7,6 +7,7 @@ export default {
 				registerBG: "url('./src/Assets/registerBG.jpg')",
 				filter: "url('./src/Assets/filter.png')",
 				filter2: "url('./src/Assets/filter2.png')",
+				placeholder: "url('./src/Assets/placeholder.jpg')",
 			},
 			colors: {
 				ourPink: "#F21874",

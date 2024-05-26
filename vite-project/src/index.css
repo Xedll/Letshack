@@ -169,3 +169,6 @@ html {
 html {
 	font-family: TT Travels;
 }
+.modal-open {
+	overflow: hidden;
+}

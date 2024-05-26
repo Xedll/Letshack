@@ -8,6 +8,7 @@ export const profileSlice = createSlice({
 		contacts: null,
 		skills: null,
 		searching: false,
+		teams: null,
 	},
 	reducers: {
 		setName: (state, action) => {
@@ -25,8 +26,11 @@ export const profileSlice = createSlice({
 		setSearching: (state, action) => {
 			state.searching = action.payload
 		},
+		setTeams: (state, action) => {
+			state.teams = action.payload
+		},
 	},
 })
-export const { setName, setDescription, setContacts, setSkills, setSearching } = profileSlice.actions
+export const { setName, setDescription, setContacts, setSkills, setSearching, setTeams } = profileSlice.actions
 
 export default profileSlice.reducer

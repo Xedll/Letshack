@@ -5,7 +5,7 @@ import CrossPNG from "../../Assets/cross.png"
 import axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
-import { setContacts, setDescription, setName, setSearching, setSkills } from "../../redux/profileSlice"
+import { setContacts, setDescription, setName, setSearching, setSkills, setTeams } from "../../redux/profileSlice"
 
 const SITE_URL = import.meta.env.VITE_SITE_URL || ""
 
@@ -31,17 +31,13 @@ export const LoginPage = () => {
 			.then((response) => {
 				const data = response.data
 				console.log(data)
-				dispatch(setName(data.initials))
-				dispatch(setDescription(data.description))
-				dispatch(setSkills(data.technologies))
-				dispatch(setSearching(data.isVisible))
-				dispatch(setContacts(data.tgId))
+				dispatch(setName(data.profileInfo.initials))
+				dispatch(setDescription(data.profileInfo.description))
+				dispatch(setSkills(data.profileInfo.technologies))
+				dispatch(setSearching(data.profileInfo.isVisible))
+				dispatch(setContacts(data.profileInfo.tgId))
+				dispatch(setTeams(data.profileInfo.createdTeams))
 				localStorage.setItem("token", data.token)
-				setTimeout(() => {
-					localStorage.setItem("token", null)
-					navigate("/", { replace: true })
-					setMessage("Время сессии истекло. Войдите снова")
-				}, 600000)
 				navigate("/profile", { replace: true })
 			})
 			.catch((error) => {
