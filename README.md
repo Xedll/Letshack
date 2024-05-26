@@ -3,7 +3,7 @@
 ## Frontend
 
 1. Установить [Node.Js](https://nodejs.org/en)
-2. Убедиться, что в [корневой папке](./frontend/) проекта присутствует .env файл со значением URL сервера (по умолчанию: http://localhost:5044) 
+2. Убедиться, что в [корневой папке](./frontend/) проекта присутствует .env файл со значением URL сервера (по умолчанию: http://localhost:5044):
     ```cmd
     > VITE_SITE_URL={{YOUR_SERVER_URL}}
     ```
