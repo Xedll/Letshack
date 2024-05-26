@@ -33,6 +33,15 @@ public class UserRepository : IUserStore
                throw new NotFoundException($"user with id: {userId} not fond");
     }
 
+    public async Task<User?> GetByLogin(string userLogin)
+    {
+        return await _dbContext.Users
+            .Include(u => u.UserTechnologies)
+            .ThenInclude(ut => ut.Technology)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.UserName == userLogin);
+    }
+
     public async Task Update(User user)
     {
         await _dbContext

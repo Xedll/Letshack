@@ -27,6 +27,11 @@ public class UserService
         await _userStore.Update(user);
     }
 
+    public async Task<User?> GetByLogin(string login)
+    {
+        return await _userStore.GetByLogin(login);
+    }
+
     public async Task UpdateUserTechnologies(string userId, List<int> technologiesIds)
     {
         if (!await _technologyStore.CheckForAll(technologiesIds)) throw new InvalidTechnologyIdException();

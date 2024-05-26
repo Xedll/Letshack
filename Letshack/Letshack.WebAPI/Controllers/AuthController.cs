@@ -2,6 +2,7 @@ using Letshack.Application.Services;
 using Letshack.Domain.Models;
 using Letshack.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Letshack.WebAPI.Controllers
@@ -11,10 +12,14 @@ namespace Letshack.WebAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
+        private readonly UserManager<User> _userManager;
+        private readonly UserService _userService;
 
-        public AuthController(AuthService authService)
+        public AuthController(AuthService authService, UserManager<User> userManager, UserService userService)
         {
             _authService = authService;
+            _userManager = userManager;
+            _userService = userService;
         }
         
 
@@ -26,18 +31,30 @@ namespace Letshack.WebAPI.Controllers
             if (!ModelState.IsValid) return BadRequest("invalid request");
             try
             {
+                var user = await _userService.GetByLogin(request.Login);
                 var token = await _authService.Login(new User
                 {
                     UserName = request.Login,
                     PasswordHash = request.Password
                 });
-                return token is not null ? Ok(new AuthResponse(token)) : BadRequest("invalid request");
+                if (token is null) return BadRequest("invalid request");
+                if (user is null) return Unauthorized();
+                var userTechnologies = await _userService.GetUserTechnology(user.Id);
+                return Ok(new AuthResponse(token, new ProfileResponse(
+                    user!.Initials
+                    , user!.Description
+                    , user.Email ?? ""
+                    , user.PhoneNumber ?? ""
+                    , user.TgId ?? ""
+                    , user!.IsVisible
+                    , userTechnologies
+                        .Select(ut => new TechnologyResponse(ut.Id, ut.Title)).ToList()
+                )));
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "internal server error");
             }
-
         }
 
 
