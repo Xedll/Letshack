@@ -5,11 +5,16 @@ export default {
 		extend: {
 			backgroundImage: {
 				registerBG: "url('./src/Assets/registerBG.jpg')",
+				filter: "url('./src/Assets/filter.png')",
+				filter2: "url('./src/Assets/filter2.png')",
+			},
+			colors: {
+				ourPink: "#F21874",
+				ourOrange: "#F28118",
+				ourGrey: "#BBBBBD",
 			},
 		},
-		colors: {
-			pink: "#F21874",
-		},
+
 		fontFamily: {
 			TTTravels: ['"TT Travels"', "sans-serif"],
 		},

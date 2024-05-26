@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import TeamPlaceholder from "../Assets/CardPlaceholder.jpg"
 import { Tag } from "./Tag"
 
-export const TeamCard = ({ Title, date, description, marks, contacts }) => {
+export const PeopleCard = ({ Title, old, description, marks, contacts }) => {
 	const [isMouseOn, setIsMouseOn] = useState(false)
 
 	return (
@@ -18,20 +18,20 @@ export const TeamCard = ({ Title, date, description, marks, contacts }) => {
 				<div className='flex gap-x-2'>
 					{marks &&
 						marks.array.forEach((element) => {
-							return <Tag text={element} color={"ourPink"} />
+							return <Tag text={element} color={"ourOrange"} />
 						})}
-					<Tag text={"HTML"} color={"ourPink"} />
+					<Tag text={"HTML"} color={"ourOrange"} />
 				</div>
-				<div className='font-semibold text-ourPink font-base'>{Title || "Требуется: дизайнер"}</div>
-				<div className='font-xs text-[#1D1F2480]'>{date || "г. Казань, 22-23 апреля"}</div>
+				<div className='font-semibold text-ourOrange font-base'>{Title || "Андрей"}</div>
+				<div className='font-xs text-[#1D1F2480]'>{old || "18 лет"}</div>
 			</div>
 			<div className={` flex-col gap-y-3 mb-4  ${isMouseOn ? "flex" : "hidden"}`}>
-				<p className='text-ourPink font-base font-semibold'>Описание</p>
+				<p className='text-ourOrange font-base font-semibold'>Описание</p>
 				<p className='text-[#1D1F2480] font-xs '>
 					{description || "Мы ищем дизайнера, с опытом участия в хакатонах. Требуется создать 2 странички и лэндинг с регистрацией"}
 				</p>
 			</div>
-			<button className='font-sm text-[#FFF] bg-ourPink border-rounded rounded-3xl w-full h-fit py-4 '>{contacts || "Откликнуться"}</button>
+			<button className='font-sm text-[#FFF] bg-ourOrange border-rounded rounded-3xl w-full h-fit py-4 '>{contacts || "Откликнуться"}</button>
 		</div>
 	)
 }

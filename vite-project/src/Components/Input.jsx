@@ -3,7 +3,7 @@ import React from "react"
 export const Input = ({ title, placeholder, handlefunc }) => {
 	return (
 		<div>
-			<p className='mb-4 text-pink text-xl'>{title}</p>
+			<p className='mb-4 text-ourPink text-xl'>{title}</p>
 			<input
 				type='text'
 				placeholder={placeholder}

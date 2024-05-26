@@ -2,6 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { RegisterPage } from "./Pages/Register/RegisterPage"
 import { LoginPage } from "./Pages/Login/LoginPage"
 import { TeamSearch } from "./Pages/Search/TeamSearch"
+import { PeopleSearch } from "./Pages/Search/PeopleSearch"
+import { ProfilePage } from "./Pages/Profile/ProfilePage"
 
 const router = createBrowserRouter([
 	{
@@ -9,12 +11,20 @@ const router = createBrowserRouter([
 		element: <RegisterPage />,
 	},
 	{
-		path: "/login",
+		path: "/",
 		element: <LoginPage />,
 	},
 	{
-		path: "/",
+		path: "/team",
 		element: <TeamSearch />,
+	},
+	{
+		path: "/people",
+		element: <PeopleSearch />,
+	},
+	{
+		path: "/profile",
+		element: <ProfilePage />,
 	},
 ])
 export const Router = () => {
