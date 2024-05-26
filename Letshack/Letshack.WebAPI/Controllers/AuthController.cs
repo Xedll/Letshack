@@ -25,7 +25,6 @@ namespace Letshack.WebAPI.Controllers
 
         [HttpPost]
         [Route("login")]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> Login([FromBody] AuthRequest request)
         {
             if (!ModelState.IsValid) return BadRequest("invalid request");
@@ -41,6 +40,7 @@ namespace Letshack.WebAPI.Controllers
                 if (user is null) return Unauthorized();
                 var userTechnologies = await _userService.GetUserTechnology(user.Id);
                 return Ok(new AuthResponse(token, new ProfileResponse(
+                    user!.Id,
                     user!.Initials
                     , user!.Description
                     , user.Email ?? ""
@@ -60,7 +60,6 @@ namespace Letshack.WebAPI.Controllers
 
         [HttpPost]
         [Route("register")]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> Register([FromBody] AuthRequest request)
         {
             if (!ModelState.IsValid) return BadRequest("invalid request");

@@ -6,6 +6,7 @@ public class Team
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string CreatorId { get; set; }
+    public DateTime CreatedAt { get; set; }
     public User Creator { get; set; }
     public List<TeamMember> TeamMembers { get; set; } = [];
 }

@@ -23,14 +23,13 @@ public class UserRepository : IUserStore
             .ToListAsync();
     }
 
-    public async Task<User> GetById(string userId)
+    public async Task<User?> GetById(string userId)
     {
         return await _dbContext.Users
                    .Include(u => u.UserTechnologies)
                    .ThenInclude(ut => ut.Technology)
                    .AsNoTracking()
-                   .FirstOrDefaultAsync(u => u.Id == userId) ??
-               throw new NotFoundException($"user with id: {userId} not fond");
+                   .FirstOrDefaultAsync(u => u.Id == userId);
     }
 
     public async Task<User?> GetByLogin(string userLogin)

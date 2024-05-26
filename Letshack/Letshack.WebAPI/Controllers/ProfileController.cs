@@ -31,6 +31,7 @@ namespace Letshack.WebAPI.Controllers
             if (user is null) return Unauthorized();
             var userTechnologies = await _userService.GetUserTechnology(user.Id);
             return Ok(new ProfileResponse(
+                    user!.Id,
                     user!.Initials
                     ,user!.Description
                     , user.Email ?? ""

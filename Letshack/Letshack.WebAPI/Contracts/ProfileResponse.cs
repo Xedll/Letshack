@@ -1,6 +1,7 @@
 namespace Letshack.WebAPI.Contracts;
 
 public record ProfileResponse(
+    string UserId,
     string Initials,
     string Description,
     string Email,
