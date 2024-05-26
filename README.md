@@ -28,7 +28,7 @@ $ npm run dev
 ## Backend
 
 1. Установить [.NET SDK](https://dotnet.microsoft.com/ru-ru/download)
-2. открыть терминал в корневой папке проекта и ввести:
+2. открыть терминал в [корневой папке](./backend/) проекта и ввести:
 ```sh 
 $ dotnet run --project Letshack.WebAPI
 ```
