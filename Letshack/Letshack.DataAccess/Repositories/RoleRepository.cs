@@ -47,4 +47,10 @@ public class RoleRepository : IRoleStore
         return await _context.TeamRole.FirstOrDefaultAsync(r => r.Id == id)
                ?? throw new NotFoundException($"role with id: {id} not found");
     }
+
+    public async Task<bool> CheckForAll(List<int> roles)
+    {
+        var teamRoles = await _context.TeamRole.Select(t => t.Id).ToListAsync();
+        return roles.All(t => teamRoles.Contains(t));
+    }
 }

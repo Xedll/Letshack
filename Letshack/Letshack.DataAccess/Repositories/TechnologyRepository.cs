@@ -62,7 +62,7 @@ public class TechnologyRepository : ITechnologyStore
             .Include(ut => ut.Technology)
             .Select(ut => new Technology
             {
-                Id = ut.Id,
+                Id = ut.TechnologyId,
                 Title = ut.Technology.Title
             }).ToListAsync();
     }

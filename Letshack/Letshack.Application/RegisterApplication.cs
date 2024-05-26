@@ -13,6 +13,7 @@ public static class RegisterApplication
         services.AddTransient<TeamRoleService>();
         services.AddTransient<TagService>();
         services.AddTransient<UserService>();
+        services.AddTransient<TeamService>();
         return services;
     }
 }

@@ -14,6 +14,8 @@ public static class RegisterDataAccess
         services.AddTransient<ITechnologyStore, TechnologyRepository>();
         services.AddTransient<IUserStore, UserRepository>();
         services.AddTransient<IUserTechnologyStore, UserTechnologyRepository>();
+        services.AddTransient<ITeamStore, TeamRepository>();
+        services.AddTransient<INeededRoleStore, NeededRoleRepository>();
         return services;
     }
 }

@@ -9,4 +9,5 @@ public interface IRoleStore
     public Task Delete(int id);
     public Task<IReadOnlyList<Role>> GetAll();
     public Task<Role> Get(int id);
+    public Task<bool> CheckForAll(List<int> roles);
 }

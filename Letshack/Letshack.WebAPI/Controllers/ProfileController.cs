@@ -62,9 +62,26 @@ namespace Letshack.WebAPI.Controllers
             user.Email = request?.Email ?? "";
             user.IsVisible = request!.IsVisible;
             
-            await _userManager.UpdateAsync(user);
             await _userService.UpdateUserTechnologies(user.Id, request.TechnologiesList);
+            await _userManager.UpdateAsync(user);
             
+            return Ok();
+        }
+
+        [Route("manage/visible")]
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] CheckBoxRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            var user = await _userManager.GetUserAsync(User);
+            if (user is null) return Unauthorized();
+
+            user.IsVisible = request.IsVisible;
+            await _userManager.UpdateAsync(user);
             return Ok();
         }
     }

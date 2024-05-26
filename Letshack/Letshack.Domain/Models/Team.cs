@@ -9,4 +9,5 @@ public class Team
     public DateTime CreatedAt { get; set; }
     public User Creator { get; set; }
     public List<TeamMember> TeamMembers { get; set; } = [];
+    public List<NeededRole> NeededRoles { get; set; } = [];
 }
