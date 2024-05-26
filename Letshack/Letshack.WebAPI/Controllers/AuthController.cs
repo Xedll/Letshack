@@ -39,7 +39,7 @@ namespace Letshack.WebAPI.Controllers
                 if (token is null) return BadRequest("invalid request");
                 if (user is null) return Unauthorized();
                 var userTechnologies = await _userService.GetUserTechnology(user.Id);
-                return Ok(new AuthResponse(token, new ProfileResponse(
+                return Ok(new AuthResponse(token, new ManageProfileResponse(
                     user!.Id,
                     user!.Initials
                     , user!.Description
@@ -48,7 +48,8 @@ namespace Letshack.WebAPI.Controllers
                     , user.TgId ?? ""
                     , user!.IsVisible
                     , userTechnologies
-                        .Select(ut => new TechnologyResponse(ut.Id, ut.Title)).ToList()
+                        .Select(ut => new TechnologyResponse(ut.Id, ut.Title)).ToList(),
+                    user.Teams.Select(t => new TeamHistory(t.Title, t.Description)).ToList()
                 )));
             }
             catch (Exception ex)

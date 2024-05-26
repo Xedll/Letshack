@@ -17,6 +17,7 @@ public class UserRepository : IUserStore
     public async Task<IReadOnlyList<User>> GetAll()
     {
         return await _dbContext.Users
+            .Include(u => u.Teams)
             .Include(u => u.UserTechnologies)
             .ThenInclude(ut => ut.Technology)
             .AsNoTracking()
@@ -26,6 +27,7 @@ public class UserRepository : IUserStore
     public async Task<User?> GetById(string userId)
     {
         return await _dbContext.Users
+                   .Include(u => u.Teams)
                    .Include(u => u.UserTechnologies)
                    .ThenInclude(ut => ut.Technology)
                    .AsNoTracking()
@@ -35,6 +37,7 @@ public class UserRepository : IUserStore
     public async Task<User?> GetByLogin(string userLogin)
     {
         return await _dbContext.Users
+            .Include(u => u.Teams)
             .Include(u => u.UserTechnologies)
             .ThenInclude(ut => ut.Technology)
             .AsNoTracking()

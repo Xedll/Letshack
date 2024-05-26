@@ -29,8 +29,9 @@ namespace Letshack.WebAPI.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             if (user is null) return Unauthorized();
+            var userTeams = await _userService.GetById(user.Id);
             var userTechnologies = await _userService.GetUserTechnology(user.Id);
-            return Ok(new ProfileResponse(
+            return Ok(new ManageProfileResponse(
                     user!.Id,
                     user!.Initials
                     ,user!.Description
@@ -39,7 +40,8 @@ namespace Letshack.WebAPI.Controllers
                     , user.TgId ?? ""
                     ,user!.IsVisible
                     , userTechnologies
-                        .Select(ut => new TechnologyResponse(ut.Id, ut.Title)).ToList()
+                        .Select(ut => new TechnologyResponse(ut.Id, ut.Title)).ToList(),
+                    userTeams!.Teams.Select(t => new TeamHistory(t.Title, t.Description)).ToList()
                 ));
         }
         
@@ -80,7 +82,8 @@ namespace Letshack.WebAPI.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user is null) return Unauthorized();
 
-            user.IsVisible = request.IsVisible;
+            
+            user.IsVisible = request!.IsVisible;
             await _userManager.UpdateAsync(user);
             return Ok();
         }

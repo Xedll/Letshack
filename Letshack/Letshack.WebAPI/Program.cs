@@ -74,11 +74,11 @@ builder.Services
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                       throw new Exception("connection string not found");
-
-// var connectionString = builder.Configuration.GetConnectionString("ConnectionString") ??
+// var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
 //                        throw new Exception("connection string not found");
+
+var connectionString = builder.Configuration.GetConnectionString("ConnectionString") ??
+                       throw new Exception("connection string not found");
 
 builder.Services.AddDbContext<AppDbContext>(opts => opts.UseNpgsql(connectionString));
 

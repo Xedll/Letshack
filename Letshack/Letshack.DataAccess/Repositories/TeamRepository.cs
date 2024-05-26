@@ -47,4 +47,5 @@ public class TeamRepository : ITeamStore
                 .SetProperty(te => te.Description ,team.Description)
                 .SetProperty(te => te.Title ,team.Title));
     }
+    
 }

@@ -9,12 +9,14 @@ public class UserService
     private readonly ITechnologyStore _technologyStore;
     private readonly IUserStore _userStore;
     private readonly IUserTechnologyStore _userTechnologyStore;
+    private readonly ITeamStore _teamStore;
 
-    public UserService(ITechnologyStore technologyStore, IUserStore userStore, IUserTechnologyStore userTechnologyStore)
+    public UserService(ITechnologyStore technologyStore, IUserStore userStore, IUserTechnologyStore userTechnologyStore, ITeamStore teamStore)
     {
         _technologyStore = technologyStore;
         _userStore = userStore;
         _userTechnologyStore = userTechnologyStore;
+        _teamStore = teamStore;
     }
 
     public async Task<IReadOnlyList<Technology>> GetUserTechnology(string userId)
@@ -52,4 +54,5 @@ public class UserService
             UserId = userId
         }).ToList());
     }
+    
 }
