@@ -5,12 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Letshack.DataAccess;
 
-public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+public class AppDbContext : IdentityDbContext<User, IdentityRole, string>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) 
         : base(options)
     {
-        
     }
     
     public DbSet<NeededRole> NeededTeamRole { get; set; }
@@ -25,35 +24,5 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         base.OnModelCreating(builder);
         builder.UseSerialColumns();
-
-        // builder.Entity<IdentityUserClaim<Guid>>(b =>
-        // {
-        //     b.ToTable("UserClaims");
-        // });
-        //
-        // builder.Entity<IdentityUserLogin<Guid>>(b =>
-        // {
-        //     b.ToTable("UserLogins");
-        // });
-        //
-        // builder.Entity<IdentityUserToken<Guid>>(b =>
-        // {
-        //     b.ToTable("UserTokens");
-        // });
-        //
-        // builder.Entity<IdentityRole<Guid>>(b =>
-        // {
-        //     b.ToTable("UserRoles");
-        // });
-        //
-        // builder.Entity<IdentityRoleClaim<Guid>>(b =>
-        // {
-        //     b.ToTable("RoleClaims");
-        // });
-        //
-        // builder.Entity<IdentityUserRole<Guid>>(b =>
-        // {
-        //     b.ToTable("UserRoles");
-        // });
     }
 }

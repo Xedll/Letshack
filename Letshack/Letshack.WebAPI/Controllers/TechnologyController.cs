@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Letshack.WebAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TechnologyController : ControllerBase
     {

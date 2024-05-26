@@ -20,9 +20,14 @@ public class GlobalExceptionHandler : IExceptionHandler
         switch (exception)
         {
             case NotFoundException:
-                httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                 httpContext.Response.ContentType = ContentType;
-                await httpContext.Response.WriteAsync("not found", cancellationToken);
+                await httpContext.Response.WriteAsync("invalid request", cancellationToken);
+                break;
+            case InvalidTechnologyIdException:
+                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                httpContext.Response.ContentType = ContentType;
+                await httpContext.Response.WriteAsync("invalid technology id", cancellationToken);
                 break;
             default:
                 httpContext.Response.StatusCode = 500;

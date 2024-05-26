@@ -4,20 +4,25 @@ using Letshack.DataAccess;
 using Letshack.Domain.Models;
 using Letshack.WebAPI.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(opts =>
+{
+    var basePath = AppContext.BaseDirectory;
+    
+    var xmlPath = Path.Combine(basePath, "Letshack.WebAPI.xml");
+    opts.IncludeXmlComments(xmlPath,true);
+});
 builder.Services.AddControllers();
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 builder.Services.AddCors(opts =>
 {
@@ -29,20 +34,6 @@ builder.Services.AddCors(opts =>
     });
 });
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                       throw new Exception("connection string not found");
-
-// var connectionString = builder.Configuration.GetConnectionString("ConnectionString") ??
-//                        throw new Exception("connection string not found");
-
-builder.Services.AddDbContext<AppDbContext>(opts => opts.UseNpgsql(connectionString));
-
-builder.Services
-    .AddApplication()
-    .AddDataAccess();
-
-builder.Host.UseSerilog((context, configuration) =>
-    configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services
     .AddDefaultIdentity<User>(opts =>
@@ -53,17 +44,16 @@ builder.Services
         opts.Password.RequireDigit = false;
         opts.Password.RequireNonAlphanumeric = false;
         opts.Password.RequireUppercase = false;
+        opts.ClaimsIdentity.UserIdClaimType = "UserId";
     })
     .AddEntityFrameworkStores<AppDbContext>();
 
-builder.Services.AddAuthentication(opts =>
-{
-    opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(opts =>
-{
-    opts.TokenValidationParameters = new TokenValidationParameters()
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opts =>
     {
+        opts.TokenValidationParameters = new TokenValidationParameters
+        {
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
@@ -73,11 +63,25 @@ builder.Services.AddAuthentication(opts =>
         ValidateAudience = true,
         RequireExpirationTime = true,
         ValidateIssuerSigningKey = true,
-    };
-});
+        };
+    });
 
 builder.Services.AddAuthorization();
 
+builder.Services
+    .AddApplication()
+    .AddDataAccess();
+
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+                       throw new Exception("connection string not found");
+
+// var connectionString = builder.Configuration.GetConnectionString("ConnectionString") ??
+//                        throw new Exception("connection string not found");
+
+builder.Services.AddDbContext<AppDbContext>(opts => opts.UseNpgsql(connectionString));
 
 var app = builder.Build();
 
@@ -112,9 +116,9 @@ app.MapGet("/weatherforecast", () =>
 
 // app.UseHttpsRedirection();
 
-app.UseExceptionHandler(_ => { });
-
 app.UseCors();
+
+app.UseExceptionHandler(_ => { });
 
 app.UseAuthentication();
 app.UseAuthorization();

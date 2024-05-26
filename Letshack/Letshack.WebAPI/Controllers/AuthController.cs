@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Letshack.WebAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -17,6 +17,7 @@ namespace Letshack.WebAPI.Controllers
             _authService = authService;
         }
         
+
         [HttpPost]
         [Route("login")]
         [IgnoreAntiforgeryToken]
@@ -39,6 +40,7 @@ namespace Letshack.WebAPI.Controllers
 
         }
 
+
         [HttpPost]
         [Route("register")]
         [IgnoreAntiforgeryToken]
@@ -49,7 +51,7 @@ namespace Letshack.WebAPI.Controllers
             {
                 var isSucceed =
                     await _authService.RegisterUser(new User { UserName = request.Login }, request.Password);
-                return isSucceed ? Ok() : BadRequest("invalid request");
+                return isSucceed ? Ok(new RegisterResponse(request.Login, request.Password)) : BadRequest("invalid request");
             }
             catch (Exception ex)
             {

@@ -40,11 +40,30 @@ public class TechnologyRepository : ITechnologyStore
         await _context.Technology.Where(r => r.Id == id).ExecuteDeleteAsync();
     }
 
+    public async Task<bool> CheckForAll(List<int> technologyIds)
+    {
+        var technologies = await _context.Technology.Select(t => t.Id).ToListAsync();
+        return technologyIds.All(t => technologies.Contains(t));
+    }
+
     public async Task<Technology> Get(int id)
     {
         return await _context.Technology
                    .AsNoTracking()
                    .FirstOrDefaultAsync(r => r.Id == id)
                ?? throw new NotFoundException($"technology with id: {id} not found");
+    }
+
+    public async Task<IReadOnlyList<Technology>> GetAllUserTechnology(string userId)
+    {
+       return await _context.UserTechnology
+            .AsNoTracking()
+            .Where(ut => ut.UserId == userId)
+            .Include(ut => ut.Technology)
+            .Select(ut => new Technology
+            {
+                Id = ut.Id,
+                Title = ut.Technology.Title
+            }).ToListAsync();
     }
 }

@@ -4,6 +4,7 @@ using System.Text;
 using Letshack.Domain.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Letshack.Application.Services;
@@ -46,8 +47,7 @@ public class AuthService
             new Claim(JwtRegisteredClaimNames.Name, user.UserName ?? throw new InvalidOperationException()),
             new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim("userId", user.Id.ToString()),
-            
+            new Claim("UserId", user.Id),
         };
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]
