@@ -1,6 +1,7 @@
 using Letshack.Application.Services;
 using Letshack.Domain.Models;
 using Letshack.WebAPI.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

@@ -10,6 +10,12 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+DotNetEnv.Env.Load();
+
+builder.Configuration
+    .AddEnvironmentVariables()
+    .AddUserSecrets(typeof(Program).Assembly).Build();
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -74,9 +80,6 @@ builder.Services
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
-// var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-//                        throw new Exception("connection string not found");
-
 var connectionString = builder.Configuration.GetConnectionString("ConnectionString") ??
                        throw new Exception("connection string not found");
 
@@ -91,8 +94,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
-// app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseCors();
 
