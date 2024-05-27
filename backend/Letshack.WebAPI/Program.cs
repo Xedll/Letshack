@@ -15,9 +15,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opts =>
 {
-    var basePath = AppContext.BaseDirectory;
-    var xmlPath = Path.Combine(basePath, "Letshack.WebAPI.xml");
-    opts.IncludeXmlComments(xmlPath,true);
+    // var basePath = AppContext.BaseDirectory;
+    // var xmlPath = Path.Combine(basePath, "Letshack.WebAPI.xml");
+    // opts.IncludeXmlComments(xmlPath,true);
 });
 builder.Services.AddControllers();
 
